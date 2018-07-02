@@ -1,13 +1,10 @@
 #!/usr/bin/python3
 
 import argparse
-from bs4 import BeautifulSoup
 import csv
-import re
 import json
 
-from scraper import simple_get
-
+from scraper import WikiScraper, prettify_subpages
 
 parser = argparse.ArgumentParser(description=
     """Virginia iGEM 2018's iGEM Wiki Webscraper. Pulls HTML from relevant
@@ -22,20 +19,6 @@ parser.add_argument('--verbose', '-v', action='count')
 parser.add_argument('--start', type=int, help='First team to pull from datafile. 0-indexed.')
 parser.add_argument('--end', type=int, help='Last team to pull from datafile.')
 
-
-def assemble_urls(year, name, subpages=['']):
-    urls = []
-    url_base = 'http://' + year + '.igem.org/Team:' + name
-    for s in subpages:
-        urls.append(url_base + s)
-    return urls
-
-def prettify_subpages(subpages):
-    output = subpages.copy()
-    for index, page in enumerate(subpages):
-        if page == '':
-            output[index] = 'Homepage'
-    return output
 
 if __name__ == '__main__':
     args = parser.parse_args() # Pull down cmdline arguments
@@ -61,11 +44,7 @@ if __name__ == '__main__':
             elif name == 'end':
                 config['data']['end'] = arg
     
-    # Filters out paragraph tags that are probably not descriptions.
-    def strain(paragraph):
-        return (paragraph.count(' ') > config['strainer']['space_count']  # More than x spaces
-            and paragraph.count('.') > config['strainer']['period_count'] # At least y periods
-            and not re.search(config['strainer']['regex'], paragraph)) # Does not contain common JavaScript syntax
+    scraper = WikiScraper(config)
 
     # Open CSV file containing teams
     teams = csv.reader(open(config['data']['datafile'], newline=''), delimiter=config['data']['filedelimiter'])
@@ -73,6 +52,8 @@ if __name__ == '__main__':
     # Open CSV file that we'll write our information to
     outfile = csv.writer(open(config['output']['outputfile'], 'w+'), delimiter=config['output']['filedelimiter'], quotechar=config['output']['filequotechar'])
 
+    # Teamcount is used to determine how close we are to done and when we
+    # should terminate.
     teamcount = 0
     totalteams = config['data']['end'] - config['data']['start']
     for team in teams:
@@ -91,37 +72,7 @@ if __name__ == '__main__':
         elif teamcount == totalteams:
             print('100% of wikis scraped')
             
-
-        year = team[8]
-        name = team[1]
-        valid = team[7] == 'Accepted'
-
-        writeline = ""
-
-        writeline = team.copy()
-
-        if valid:
-            urls = assemble_urls(year, name, config['data']['subpages'])
-
-            # Extract HTML from URLs, spit out parsable BeautifulSoup objects
-            for index, url in enumerate(urls):
-                raw_html = simple_get(url)
-                html = BeautifulSoup(raw_html, 'html.parser')
-            
-                if config['output']['print']:
-                    print(name + ' ' + year + ' ' +  prettify_subpages(config['data']['subpages'])[index] + '\n')
-
-                output = ""
-
-                for tag in html.select(config['data']['htmlselector']):
-                    if strain(tag.text):
-                        if config['output']['print']:
-                            print(tag.text + '\n')
-                        output += tag.text + '\n'
-                print(len(html.select(config['data']['htmlselector'])))
-
-                writeline.append(output)
-
+        writeline = scraper.scrape(team)
             
         if config['output']['print']:
             print('--------------------------------------------------')

@@ -18,10 +18,10 @@
         "use": {
             "space_count": true,
             "period_count": true,
-            "regex": true
+            "negative_regex": true
         },
         "space_count": 10,
         "period_count": 2,
-        "regex": "(function\\(\\) \\{|$\\(.*\\)|^.*\\{.*\\})"
+        "negative_regex": "(function\\(\\) \\{|$\\(.*\\)|^.*\\{.*\\})"
     }
 }
