@@ -15,7 +15,6 @@ parser = argparse.ArgumentParser(description=
     be set via flags, see config.json for further configuration options.""")
 parser.add_argument('data', help='Path to .csv file containing team name information. Retrieve from https://igem.org/Team_List. Alternatively specify a single team name, which can be found on the wiki as http://<year>.igem.org/Team:<team-name>')
 parser.add_argument('--config', '-c', help='Configuration file to use. Pass in arguments with this file.', default='config.json')
-parser.add_argument('--year', '-y', help='Team year. Needed to generate URLs for pulling information.')
 parser.add_argument('--subpages', '-s', help='Subpages. In addition to the base URL, these subpages will be scraped. Examples would be /Description or /Parts')
 parser.add_argument('--output', '-o', help='CSV file to output data to.')
 parser.add_argument('--verbose', '-v', action='count')
@@ -41,8 +40,6 @@ if __name__ == '__main__':
                 config['data']['subpages'] = arg
             elif name == 'verbose':
                 config['output']['verbose'] = arg
-            elif name == 'year':
-                config['data']['year'] = arg
             elif name == 'start':
                 config['data']['start'] = arg
             elif name == 'end':
