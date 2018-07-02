@@ -105,6 +105,8 @@ class WikiScraper:
                     text = tag.text
                     if self.config['scraper']['stripwhitespace']:
                         text = text.strip()
+                    if self.config['scraper']['collapsenewlines']:
+                        text = re.sub(r'\n+', '\n', text)
 
                     if self.strain(text):
                         if self.config['output']['print']:

@@ -10,6 +10,7 @@
         "htmlselector": "#mw-content-text p,div",
         "gracetime": 1.0,
         "stripwhitespace": true,
+        "collapsenewlines": true,
         "use": {
             "space_count": true,
             "period_count": true,
