@@ -1,0 +1,27 @@
+{
+    "data": {
+        "year": "2018",
+        "subpages": ["", "/Description"],
+        "filedelimiter": ",",
+        "htmlselector": "#mw-content-text p,div",
+        "start": 0,
+        "end": 20
+    },
+    "output": {
+        "outputfile": "output/descriptions.csv",
+        "filedelimiter": "|",
+        "filequotechar": "\"",
+        "verbose": false,
+        "print": false
+    },
+    "strainer": {
+        "use": {
+            "space_count": true,
+            "period_count": true,
+            "regex": true
+        },
+        "space_count": 10,
+        "period_count": 2,
+        "regex": "(function\\(\\) \\{|$\\(.*\\)|^.*\\{.*\\})"
+    }
+}
