@@ -71,15 +71,18 @@ if __name__ == '__main__':
             outfile.writerow(team + prettify_subpages(config['data']['subpages']))
             teamcount = teamcount + 1
             continue
-        elif teamcount > totalteams:
+        elif teamcount < config['data']['start']:
+            teamcount = teamcount + 1
+            continue
+        elif teamcount > config['data']['end']:
             break
-        elif teamcount == totalteams / 4:
+        elif teamcount == config['data']['start'] + totalteams / 4:
             print('25% of wikis scraped')
-        elif teamcount == totalteams / 2:
+        elif teamcount == config['data']['start'] + totalteams / 2:
             print('50% of wikis scraped')
-        elif teamcount == totalteams * 3 / 4:
+        elif teamcount == config['data']['start'] + totalteams * 3 / 4:
             print('75% of wikis scraped')
-        elif teamcount == totalteams:
+        elif teamcount > config['data']['start'] + totalteams:
             print('100% of wikis scraped')
             
         outfile.writerow(team + scraper.scrape(team))

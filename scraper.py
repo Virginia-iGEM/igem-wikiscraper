@@ -102,10 +102,14 @@ class WikiScraper:
                 htmltags = html.select(self.config['scraper']['htmlselector'])
 
                 for tag in htmltags:
-                    if self.strain(tag.text):
+                    text = tag.text
+                    if self.config['scraper']['stripwhitespace']:
+                        text = text.strip()
+
+                    if self.strain(text):
                         if self.config['output']['print']:
-                            print(tag.text + '\n')
-                        output.append(tag.text)
+                            print(text + '\n')
+                        output.append(text)
 
                 if self.config['output']['verbose']:
                     print(len(output), 'useful items found on', pretty_subpages[index])

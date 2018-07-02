@@ -3,12 +3,13 @@
         "year": "2018",
         "subpages": ["", "/Description"],
         "filedelimiter": ",",
-        "start": 0,
-        "end": 5
+        "start": 28,
+        "end": 34 
     },
     "scraper": {
         "htmlselector": "#mw-content-text p,div",
         "gracetime": 1.0,
+        "stripwhitespace": true,
         "use": {
             "space_count": true,
             "period_count": true,
