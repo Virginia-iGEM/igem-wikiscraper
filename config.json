@@ -3,18 +3,12 @@
         "year": "2018",
         "subpages": ["", "/Description"],
         "filedelimiter": ",",
-        "htmlselector": "#mw-content-text p,div",
         "start": 0,
-        "end": 20
+        "end": 5
     },
-    "output": {
-        "outputfile": "output/descriptions.csv",
-        "filedelimiter": "|",
-        "filequotechar": "\"",
-        "verbose": false,
-        "print": false
-    },
-    "strainer": {
+    "scraper": {
+        "htmlselector": "#mw-content-text p,div",
+        "gracetime": 1.0,
         "use": {
             "space_count": true,
             "period_count": true,
@@ -23,5 +17,12 @@
         "space_count": 10,
         "period_count": 2,
         "negative_regex": "(function\\(\\) \\{|$\\(.*\\)|^.*\\{.*\\})"
+    },
+    "output": {
+        "outputfile": "output/descriptions.csv",
+        "filedelimiter": "|",
+        "filequotechar": "\"",
+        "verbose": true,
+        "print": false
     }
 }

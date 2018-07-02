@@ -6,10 +6,13 @@ import json
 
 from scraper import WikiScraper, prettify_subpages
 
+
+# Create arguments for commandline tool
 parser = argparse.ArgumentParser(description=
     """Virginia iGEM 2018's iGEM Wiki Webscraper. Pulls HTML from relevant
     iGEM pages parses through them to extract project descriptions. Used to
-    discover other teams for potential collaboration. Not all parameters can be set via flags, see config.json for further configuration options.""")
+    discover other teams for potential collaboration. Not all parameters can 
+    be set via flags, see config.json for further configuration options.""")
 parser.add_argument('data', help='Path to .csv file containing team name information. Retrieve from https://igem.org/Team_List. Alternatively specify a single team name, which can be found on the wiki as http://<year>.igem.org/Team:<team-name>')
 parser.add_argument('--config', '-c', help='Configuration file to use. Pass in arguments with this file.', default='config.json')
 parser.add_argument('--year', '-y', help='Team year. Needed to generate URLs for pulling information.')
@@ -18,6 +21,7 @@ parser.add_argument('--output', '-o', help='CSV file to output data to.')
 parser.add_argument('--verbose', '-v', action='count')
 parser.add_argument('--start', type=int, help='First team to pull from datafile. 0-indexed.')
 parser.add_argument('--end', type=int, help='Last team to pull from datafile.')
+parser.add_argument('--gracetime', '-g', type=float, help='Time to wait between scrapes.')
 
 
 if __name__ == '__main__':
@@ -43,14 +47,20 @@ if __name__ == '__main__':
                 config['data']['start'] = arg
             elif name == 'end':
                 config['data']['end'] = arg
+            elif name == 'gracetime':
+                config['scraper']['gracetime'] = arg
     
+    # Create WikiScraper with loaded config file
     scraper = WikiScraper(config)
 
     # Open CSV file containing teams
-    teams = csv.reader(open(config['data']['datafile'], newline=''), delimiter=config['data']['filedelimiter'])
+    teams = csv.reader(open(config['data']['datafile'], newline=''),
+                       delimiter=config['data']['filedelimiter'])
 
     # Open CSV file that we'll write our information to
-    outfile = csv.writer(open(config['output']['outputfile'], 'w+'), delimiter=config['output']['filedelimiter'], quotechar=config['output']['filequotechar'])
+    outfile = csv.writer(open(config['output']['outputfile'], 'w+'), 
+                         delimiter=config['output']['filedelimiter'],  
+                         quotechar=config['output']['filequotechar'])
 
     # Teamcount is used to determine how close we are to done and when we
     # should terminate.
@@ -72,9 +82,9 @@ if __name__ == '__main__':
         elif teamcount == totalteams:
             print('100% of wikis scraped')
             
-        writeline = scraper.scrape(team)
-            
+        outfile.writerow(team + scraper.scrape(team))
+
         if config['output']['print']:
             print('--------------------------------------------------')
-        outfile.writerow(writeline)
+
         teamcount = teamcount + 1
