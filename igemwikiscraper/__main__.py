@@ -24,7 +24,7 @@ parser.add_argument('--end', type=int, help='Last team to pull from datafile.')
 parser.add_argument('--gracetime', '-g', type=float, help='Time to wait between scrapes.')
 
 
-if __name__ == '__main__':
+def main():
     args = parser.parse_args() # Pull down cmdline arguments
 
     config = json.load(open(args.config, 'r')) # Load config file
@@ -95,3 +95,6 @@ if __name__ == '__main__':
                 print('======================================================================')
 
             teamcount = teamcount + 1
+
+if __name__ == "__main__":
+    main()
