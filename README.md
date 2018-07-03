@@ -26,7 +26,7 @@ cp igem-wikiscraper/wikiscraper/config.json -t new_scrape
 cd new_scrape
 mkdir data output
 cd data
-wget https://igem.org/Team_List.cgi?jamboree=91&team_list_download=1
+wget "https://igem.org/Team_List.cgi?jamboree=91&team_list_download=1"
 cd ..
 igemwikiscraper data/2018__team_list__[YOUR DATE HERE].csv
 ```
