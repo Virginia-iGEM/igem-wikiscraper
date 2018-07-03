@@ -2,8 +2,8 @@
     "data": {
         "subpages": ["", "/Description"],
         "filedelimiter": ",",
-        "start": 28,
-        "end": 34 
+        "start": 0,
+        "end": 50 
     },
     "scraper": {
         "htmlselector": "#mw-content-text",
