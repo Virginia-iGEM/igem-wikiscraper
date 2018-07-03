@@ -3,6 +3,7 @@
 import argparse
 import csv
 import json
+import string
 
 from scraper import WikiScraper, prettify_subpages
 
@@ -13,9 +14,9 @@ parser = argparse.ArgumentParser(description=
     iGEM pages parses through them to extract project descriptions. Used to
     discover other teams for potential collaboration. Not all parameters can 
     be set via flags, see config.json for further configuration options.""")
-parser.add_argument('data', help='Path to .csv file containing team name information. Retrieve from https://igem.org/Team_List. Alternatively specify a single team name, which can be found on the wiki as http://<year>.igem.org/Team:<team-name>')
+parser.add_argument('data', nargs='*', help='Path to .csv file containing team name information. Retrieve from https://igem.org/Team_List. Alternatively specify a single team name, which can be found on the wiki as http://<year>.igem.org/Team:<team-name>')
 parser.add_argument('--config', '-c', help='Configuration file to use. Pass in arguments with this file.', default='config.json')
-parser.add_argument('--subpages', '-s', help='Subpages. In addition to the base URL, these subpages will be scraped. Examples would be /Description or /Parts')
+parser.add_argument('--subpages', '-s', nargs='*', help='Subpages. In addition to the base URL, these subpages will be scraped. Examples would be /Description or /Parts')
 parser.add_argument('--output', '-o', help='CSV file to output data to.')
 parser.add_argument('--verbose', '-v', action='count')
 parser.add_argument('--start', type=int, help='First team to pull from datafile. 0-indexed.')
@@ -50,41 +51,47 @@ if __name__ == '__main__':
     # Create WikiScraper with loaded config file
     scraper = WikiScraper(config)
 
-    # Open CSV file containing teams
-    teams = csv.reader(open(config['data']['datafile'], newline=''),
-                       delimiter=config['data']['filedelimiter'])
 
     # Open CSV file that we'll write our information to
     outfile = csv.writer(open(config['output']['outputfile'], 'w+'), 
                          delimiter=config['output']['filedelimiter'],  
                          quotechar=config['output']['filequotechar'])
 
-    # Teamcount is used to determine how close we are to done and when we
-    # should terminate.
-    teamcount = 0
-    totalteams = config['data']['end'] - config['data']['start']
-    for team in teams:
-        if teamcount == 0:
-            outfile.writerow(team + prettify_subpages(config['data']['subpages']))
-            teamcount = teamcount + 1
-            continue
-        elif teamcount < config['data']['start']:
-            teamcount = teamcount + 1
-            continue
-        elif teamcount > config['data']['end']:
-            break
-        elif teamcount == config['data']['start'] + totalteams / 4:
-            print('25% of wikis scraped')
-        elif teamcount == config['data']['start'] + totalteams / 2:
-            print('50% of wikis scraped')
-        elif teamcount == config['data']['start'] + totalteams * 3 / 4:
-            print('75% of wikis scraped')
-        elif teamcount > config['data']['start'] + totalteams:
-            print('100% of wikis scraped')
-            
-        outfile.writerow(team + scraper.scrape(team))
+    for datafile in config['data']['datafile']:
+        # Open CSV file containing teams
+        teams = csv.reader(open(datafile, newline=''),
+                           delimiter=config['data']['filedelimiter'])
+        # Teamcount is used to determine how close we are to done and when we
+        # should terminate.
+        teamcount = 0
+        totalteams = config['data']['end'] - config['data']['start']
+        for team in teams:
+            if teamcount == 0:
+                outfile.writerow(team + prettify_subpages(config['data']['subpages']))
+                teamcount = teamcount + 1
+                continue
+            elif teamcount < config['data']['start']:
+                teamcount = teamcount + 1
+                continue
+            elif teamcount > config['data']['end']:
+                break
+            elif teamcount == config['data']['start'] + totalteams / 4:
+                print('25% of wikis scraped')
+            elif teamcount == config['data']['start'] + totalteams / 2:
+                print('50% of wikis scraped')
+            elif teamcount == config['data']['start'] + totalteams * 3 / 4:
+                print('75% of wikis scraped')
+            elif teamcount > config['data']['start'] + totalteams:
+                print('100% of wikis scraped')
+                
+            teamdata = scraper.scrape(team)
+            # Flatten team data using list comprehensions
+            flatteneddata = [y for x in teamdata for y in x] 
+            concatenateddata = '\n'.join(flatteneddata).encode('unicode_escape')
 
-        if config['output']['print']:
-            print('--------------------------------------------------')
+            outfile.writerow(team + [concatenateddata])
 
-        teamcount = teamcount + 1
+            if config['output']['print']:
+                print('--------------------------------------------------')
+
+            teamcount = teamcount + 1
