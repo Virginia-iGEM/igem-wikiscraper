@@ -75,3 +75,4 @@ Note: Some of these options can be set when using the CLI. Enter `igemwikiscrape
 - Expand collapsenewlines option to also collapse strings of newlines and tabs into just one newline
 - Make it so that options under `scraper.use` actually enable/disable the filter
 - Replace `excisescripts` and `excisestyles` flags with an HTML selector that excises arbitrary HTML elements
+- Either enable output to multiple files or ensure multiple inputs lead to a sane single output
