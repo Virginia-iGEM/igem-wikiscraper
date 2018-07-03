@@ -41,19 +41,19 @@ Specific HTML tags are removed in preprocessing (such as script and style tags, 
 
 All of the children of selected tags are then unwrapped, discarding their attributes and keeping only their content in (what I believe is) a pre-ordered tree traversal. 
 
-This process occurs for each page specified by `subpages`, leaving us with a list of lists of strings for each team. This 2d list is flattened to 1d by joining the sublists with newlines, before being appended to team information and written out one row in a .csv file specified by `outputfile`. This is repeated for each team in the teamlist, building up a list of team information paired with useful scraped data.
+This process occurs for each page specified by `subpages`, leaving us with a list of lists of strings for each team. This 2d list is flattened to 1d by joining the sublists with newlines, before being appended to team information and written out as one row in a .csv file specified by `outputfile`. This is repeated for each team in the teamlist, building up a list of team information paired with useful scraped data.
 
 ## Configuration
 
 Note: Some of these options can be set when using the CLI. Enter `igemwikiscraper -h` for a list of options which can be set through the CLI. This is convenient for options like `-vv` which you may not want to see on every scrape attempt.
 
 - data: Options for what kind of data we take in and look for
-  - subpages: Which pages on the wiki to look at. `""` denotes the index. Note that each page is lead with a forward slash; every page must be lead with a forward slash. Examples: `/Team`, `/Safet`
+  - subpages: Which pages on the wiki to look at. `""` denotes the index. Note that each page is lead with a forward slash; every page must be lead with a forward slash. Examples: `/Team`, `/Safety`
   - filedelimiter: What kind of csv delimiter is the team name list using? The iGEM Team List page seems to generate CSV's with comma delimiters.
   - start: Which team in the list to start with.
   - end: Which team in the list to end with
 - scraper: Options for how the scraper filters and interprets data
-  - htmlselector: JQuery-style selector for html elements. `#content` seems to include all hand-written team info without including any extra junk.
+  - htmlselector: JQuery-style selector for html elements. `#content` seems to include all hand-written team info without including any extra junk. Upon inspecting many iGEM wikis, we found all content _should_ be wrapped in `#mw-content-text`, but because there are _so many_ (about 10% of) iGEM wikis with broken HTML, mostly in the form of unpaired HTML tags, we have to be a bit generous with our selectors.
   - gracetime: Number of seconds to wait between HTML GET requests. Strongly reccommend this to be kept at 1 or above; any lower is considered impolite by web scraping standards, may break the iGEM Wiki, and may be considered a crime (a Denial of Service Attack, albeit a poor one).
   - stripwhitespace: Removes leading and trailing whitespace. Cleans up output a little.
   - collapsenewlines: Removes strings of newlines in retrieved strings
