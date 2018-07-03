@@ -97,6 +97,8 @@ class WikiScraper:
                 raw_html = simple_get(url)
                 # Rest after URL request so as to not accidentally DOS wiki
                 time.sleep(self.config['scraper']['gracetime'])
+                if raw_html is None: # Continue if we have no HTML
+                    continue
                 html = BeautifulSoup(raw_html, 'lxml')
 
                 #Preprocessing to remove unwanted tags
