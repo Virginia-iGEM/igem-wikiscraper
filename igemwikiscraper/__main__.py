@@ -67,7 +67,7 @@ def main():
         totalteams = config['data']['end'] - config['data']['start']
         for team in teams:
             if teamcount == 0:
-                outfile.writerow(team + prettify_subpages(config['data']['subpages']))
+                outfile.writerow(team + ['Scrape Successful?'] + prettify_subpages(config['data']['subpages']))
                 teamcount = teamcount + 1
                 continue
             elif teamcount < config['data']['start']:
@@ -86,10 +86,11 @@ def main():
                 
             teamdata = scraper.scrape(team)
             # Flatten team data using list comprehensions
-            flatteneddata = [y for x in teamdata for y in x] 
-            concatenateddata = '\n'.join(flatteneddata).encode('unicode_escape')
+            concatenateddata = []
+            for data in teamdata:
+                concatenateddata.append('\n'.join(data).replace("\n",r"\n").replace("\t",r"\t"))
 
-            outfile.writerow(team + [concatenateddata])
+            outfile.writerow(team + concatenateddata)
 
             if config['output']['verbose'] > 1:
                 print('======================================================================')

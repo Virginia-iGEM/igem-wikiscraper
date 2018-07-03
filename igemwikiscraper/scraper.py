@@ -87,8 +87,8 @@ class WikiScraper:
             print('Scraping', name, year + "'s wiki")
             print('----------------------------------------------------------------------')
 
+        success = False
         outputdata = []
-
         if valid:
             urls = assemble_urls(year, name, self.config['data']['subpages'])
 
@@ -125,14 +125,25 @@ class WikiScraper:
                                 print('----------------------------------------------------------------------')
                             output.append(text)
 
-                if self.config['output']['verbose'] > 0:
-                    print(len(output), 'useful items found on', pretty_subpages[index])
+                if len(output) == 0:
+                    if self.config['output']['verbose'] > 0:
+                        print('No useful items found on', pretty_subpages[index] + '.', 
+                              'page either hasn\'t had a description added to it,'
+                              + 'is a redirect to an external website (against iGEM rules),'
+                              + 'or HTML has so many syntax errors that the parser cannot'
+                              + 'interpret it.')
+                else:
+                    if self.config['output']['verbose'] > 0:
+                        print(len(output), 'useful items found on', pretty_subpages[index])
+                    success = True
+
 
                 outputdata.append(output)
         else:
             if self.config['output']['verbose'] > 1:
                 print('Skipping team; Deleted, Withdrawn or Pending')
 
+        outputdata.insert(0, [str(success)])
         return outputdata
 
     # Filters out paragraph tags that are probably not descriptions.
