@@ -59,8 +59,15 @@ def main():
 
     for datafile in config['data']['datafile']:
         # Open CSV file containing teams
-        teams = csv.reader(open(datafile, newline=''),
+        teamfile = open(datafile, newline='')
+        teams = csv.reader(teamfile,
                            delimiter=config['data']['filedelimiter'])
+
+        if ('start' not in config['data'] or config['data']['start'] == -1):
+            config['data']['start'] = 0
+        if ('end' not in config['data'] or config['data']['end'] == -1):
+            config['data']['end'] = sum(1 for row in teams)
+            teamfile.seek(0) # reset iterator to beginning of file
         # Teamcount is used to determine how close we are to done and when we
         # should terminate.
         teamcount = 0
