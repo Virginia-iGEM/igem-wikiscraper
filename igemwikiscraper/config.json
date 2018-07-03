@@ -6,7 +6,7 @@
         "end": 50 
     },
     "scraper": {
-        "htmlselector": "#mw-content-text",
+        "htmlselector": "#content",
         "gracetime": 1.0,
         "stripwhitespace": true,
         "collapsenewlines": true,
