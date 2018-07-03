@@ -11,7 +11,8 @@ setup(
     packages=['igemwikiscraper'],
     install_requires = [
         'requests', 
-        'beautifulsoup4'
+        'beautifulsoup4',
+        'lxml'
     ],
     entry_points = {
         'console_scripts': [
