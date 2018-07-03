@@ -6,10 +6,12 @@
         "end": 34 
     },
     "scraper": {
-        "htmlselector": "#mw-content-text p,div",
+        "htmlselector": "#mw-content-text",
         "gracetime": 1.0,
         "stripwhitespace": true,
         "collapsenewlines": true,
+        "excisescripts": true,
+        "excisestyles": true,
         "use": {
             "space_count": true,
             "period_count": true,
@@ -23,7 +25,6 @@
         "outputfile": "output/descriptions.csv",
         "filedelimiter": "|",
         "filequotechar": "\"",
-        "verbose": true,
-        "print": false
+        "verbose": 1
     }
 }

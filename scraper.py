@@ -83,8 +83,9 @@ class WikiScraper:
         valid = team[7] == 'Accepted'
         pretty_subpages = prettify_subpages(self.config['data']['subpages'])
 
-        if self.config['output']['verbose'] or self.config['output']['print']:
+        if self.config['output']['verbose'] > 0:
             print('Scraping', name, year + "'s wiki")
+            print('----------------------------------------------------------------------')
 
         outputdata = []
 
@@ -94,29 +95,44 @@ class WikiScraper:
             # Extract HTML from URLs, spit out parsable BeautifulSoup objects
             for index, url in enumerate(urls):
                 raw_html = simple_get(url)
+                # Rest after URL request so as to not accidentally DOS wiki
                 time.sleep(self.config['scraper']['gracetime'])
                 html = BeautifulSoup(raw_html, 'html.parser')
 
-                output = []
+                #Preprocessing to remove unwanted tags
+                if self.config['scraper']['excisescripts']:
+                    [s.extract() for s in html('script')]
+                if self.config['scraper']['excisestyles']:
+                    [s.extract() for s in html('style')]
 
+                # Pull out tags using the jquery selector specified in config
                 htmltags = html.select(self.config['scraper']['htmlselector'])
 
+                output = []
                 for tag in htmltags:
-                    text = tag.text
                     if self.config['scraper']['stripwhitespace']:
-                        text = text.strip()
-                    if self.config['scraper']['collapsenewlines']:
-                        text = re.sub(r'\n+', '\n', text)
+                        strings = tag.stripped_strings
+                    else:
+                        strings = tag.strings
 
-                    if self.strain(text):
-                        if self.config['output']['print']:
-                            print(text + '\n')
-                        output.append(text)
+                    for text in strings:
+                        if self.config['scraper']['collapsenewlines']:
+                            text = re.sub(r'\n+', '\n', text)
 
-                if self.config['output']['verbose']:
+                        if self.strain(text):
+                            if self.config['output']['verbose'] > 1:
+                                print(text + '\n')
+                                print('----------------------------------------------------------------------')
+                            output.append(text)
+
+                if self.config['output']['verbose'] > 0:
                     print(len(output), 'useful items found on', pretty_subpages[index])
 
                 outputdata.append(output)
+        else:
+            if self.config['output']['verbose'] > 1:
+                print('Skipping team; Deleted, Withdrawn or Pending')
+
         return outputdata
 
     # Filters out paragraph tags that are probably not descriptions.

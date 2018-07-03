@@ -91,7 +91,7 @@ if __name__ == '__main__':
 
             outfile.writerow(team + [concatenateddata])
 
-            if config['output']['print']:
-                print('--------------------------------------------------')
+            if config['output']['verbose'] > 1:
+                print('======================================================================')
 
             teamcount = teamcount + 1
