@@ -16,7 +16,7 @@ setup(
     ],
     entry_points = {
         'console_scripts': [
-            'wikiscraper=igemwikiscraper.__main__:main'
+            'igemwikiscraper=igemwikiscraper.__main__:main'
         ]
     }
 )

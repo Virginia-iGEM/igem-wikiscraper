@@ -5,7 +5,7 @@ import csv
 import json
 import string
 
-from scraper import WikiScraper, prettify_subpages
+from igemwikiscraper.scraper import WikiScraper, prettify_subpages
 
 
 # Create arguments for commandline tool
