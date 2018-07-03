@@ -18,7 +18,7 @@ parser.add_argument('data', nargs='*', help='Path to .csv file containing team n
 parser.add_argument('--config', '-c', help='Configuration file to use. Pass in arguments with this file.', default='config.json')
 parser.add_argument('--subpages', '-s', nargs='*', help='Subpages. In addition to the base URL, these subpages will be scraped. Examples would be /Description or /Parts')
 parser.add_argument('--output', '-o', help='CSV file to output data to.')
-parser.add_argument('--verbose', '-v', action='count')
+parser.add_argument('--verbose', '-v', action='count' help='Verbosity level. -v prints summary of each wiki scrape. -vv prints the contents of each wiki scrape. Omit to receive only progress notifications.')
 parser.add_argument('--start', type=int, help='First team to pull from datafile. 0-indexed.')
 parser.add_argument('--end', type=int, help='Last team to pull from datafile.')
 parser.add_argument('--gracetime', '-g', type=float, help='Time to wait between scrapes.')
