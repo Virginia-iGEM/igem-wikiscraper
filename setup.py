@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name = 'igemwikiscraper',
-    version = '0.2.0',
+    version = '0.3.0',
     description = 'CLI+Library webscraper built specifically for iGEM team wiki pages',
     url = 'https://github.com/Virginia-iGEM/igem-wikiscraper',
     author='Dylan Culfogienis',
@@ -12,11 +12,13 @@ setup(
     install_requires = [
         'requests', 
         'beautifulsoup4',
-        'lxml'
+        'lxml',
+        'gooey'
     ],
     entry_points = {
         'console_scripts': [
-            'igemwikiscraper=igemwikiscraper.__main__:main'
+            'wikiscraper=igemwikiscraper.__main__:main',
+            'wikiscraper-gui=igemwikiscraper.__main__:gui'
         ]
     }
 )
