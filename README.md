@@ -6,7 +6,7 @@ A quick-and-dirty Python CLI tool for scraping iGEM wikis. Can be used to pull o
 
 This tool currently only functions with Python3. Python2 compatibility is on the backburner. Any instructions assume you have Python3 installed and on PATH.
 
-1. Install via `pip`
+1. Install via `pip` or download from [releases](https://github.com/Virginia-iGEM/igem-wikiscraper/releases)
 2. Create a new folder to hold all your information and scrapes. Add `data` and `output` subdirectories
 3. Copy `config.json` from [here](https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/igemwikiscraper/config.json) into this new folder
 4. Retrieve data from http://igem.org/Team_List.
