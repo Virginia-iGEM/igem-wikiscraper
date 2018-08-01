@@ -4,40 +4,38 @@ A quick-and-dirty Python CLI tool for scraping iGEM wikis. Can be used to pull o
 
 ## Use
 
-This tool currently only functions with Python3. Python2 compatibility is on the backburner.
+This tool currently only functions with Python3. Python2 compatibility is on the backburner. Any instructions assume you have Python3 installed and on PATH.
+
+1. Install via `pip`
+2. Create a new folder to hold all your information and scrapes. Add `data` and `output` subdirectories
+3. Copy `config.json` from [here](https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/igemwikiscraper/config.json) into this new folder
+4. Retrieve data from http://igem.org/Team_List.
+5. Modify `config.json` as you see fit. Descriptions of config options are available [below](#configuration).
+6. Use either `wikiscraper` or `wikiscraper-gui`. See below.
 
 ### GUI
 
-We've built a user-friendly GUI for this tool if you prefer pressing buttons. It still requires configuration as detailed under [Configuration](#configuration) using a text editor such as Notepad or Vim.
+A GUI tool is available. This tool can either be found on the [releases](https://github.com/Virginia-iGEM/igem-wikiscraper/releases) page, and can be downloaded as a Windows executable, or can be accessed via `wikiscraper-gui` once installed with `pip install igemwikiscraper`. Steps 1-5 above should be followed before using this GUI.
 
-### Command Line
+### Terminal
 
-1. Clone `igem-wikiscraper` somewhere out of the way, like `~/.install`.
-2. Enter repository, then install with `cd igem-wikiscraper` and `./install.sh`
-  - Note for Windows users: install.sh will likely not work. Instead type either `pip install -e .` or `pip3 install -e .` depending on the name of your Python3 pip tool.
-3. Leave the repository. Create a new folder to store your input and output data.
-4. Copy `config.json` from the cloned `igem-wikiscraper/igemwikiscraper` directory into your new folder.
-5. Modify `config.json` as you see fit. Descriptions of config options are available below.
-6. Run `wikiscraper [teamlist.csv]` from this new folder, where `[teamlist.csv]` is the path to a .csv list of iGEM teams. These files can be found at https://igem.org/Team_List
-
-#### Example Command Sequence
+These commands should work for Ubuntu. For Windows or any 
 
 ```bash
-git clone https://github.com/Virginia-iGEM/igem-wikiscraper.git
-cd igem-wikiscraper
-sudo ./install.sh
-cd ..
-mkdir new_scrape
-cp igem-wikiscraper/wikiscraper/config.json -t new_scrape
-cd new_scrape
-mkdir data output
+pip3 install igemwikiscraper
+mkdir igem-scrapes
+cd igem-scrapes
+wget https://github.com/Virginia-iGEM/igem-wikiscraper/blob/master/igemwikiscraper/config.json
+nano config.json    # modify as needed
+mkdir {data,output}
 cd data
-wget "https://igem.org/Team_List.cgi?jamboree=91&team_list_download=1"
+wget https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/data/2018__team_list__2018-07-02.csv
 cd ..
-wikiscraper data/2018__team_list__[YOUR DATE HERE].csv
+wikiscraper data/2018__team_list__2018-07-02.csv
 ```
 
 Output file can be found under `output/` or as configured.
+
 
 ## Brief Description of Tool Function
 
@@ -56,8 +54,8 @@ Note: Some of these options can be set when using the CLI. Enter `wikiscraper -h
 - data: Options for what kind of data we take in and look for
   - subpages: Which pages on the wiki to look at. `""` denotes the index. Note that each page is lead with a forward slash; every page must be lead with a forward slash. Examples: `/Team`, `/Safety`
   - filedelimiter: What kind of csv delimiter is the team name list using? The iGEM Team List page seems to generate CSV's with comma delimiters.
-  - start: Which team in the list to start with.
-  - end: Which team in the list to end with
+  - start: Which team in the list to start with. Set to negative to remove limit.
+  - end: Which team in the list to end with. Set to negative to remove limit.
 - scraper: Options for how the scraper filters and interprets data
   - htmlselector: JQuery-style selector for html elements. `#content` seems to include all hand-written team info without including any extra junk. Upon inspecting many iGEM wikis, we found all content _should_ be wrapped in `#mw-content-text`, but because there are _so many_ (about 10% of) iGEM wikis with broken HTML, mostly in the form of unpaired HTML tags, we have to be a bit generous with our selectors.
   - gracetime: Number of seconds to wait between HTML GET requests. Strongly reccommend this to be kept at 1 or above; any lower is considered impolite by web scraping standards, may break the iGEM Wiki, and may be considered a crime (a Denial of Service Attack, albeit a poor one).
