@@ -15,7 +15,7 @@ This tool currently only functions with Python3. Python2 compatibility is on the
 
 ### GUI
 
-A GUI tool is available. This tool can either be found on the [releases](https://github.com/Virginia-iGEM/igem-wikiscraper/releases) page, and can be downloaded as a Windows executable, or can be accessed via `wikiscraper-gui` once installed with `pip install igemwikiscraper`. Steps 1-5 above should be followed before using this GUI.
+A GUI tool is available. This tool can be accessed via `wikiscraper-gui` once installed with `pip install igemwikiscraper`. Steps 1-5 above should be followed before using this GUI.
 
 ### Terminal
 
