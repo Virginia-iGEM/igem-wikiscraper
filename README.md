@@ -19,7 +19,7 @@ A GUI tool is available. This tool can either be found on the [releases](https:/
 
 ### Terminal
 
-These commands should work for Ubuntu. For Windows or any 
+These commands should work for Ubuntu. For Windows, substitute `pip` for `pip3`. For Mac or other UNIXes, you're on your own.
 
 ```bash
 pip3 install igemwikiscraper
