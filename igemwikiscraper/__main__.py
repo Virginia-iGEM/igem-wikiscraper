@@ -13,7 +13,7 @@ from igemwikiscraper.scraper import WikiScraper, prettify_subpages
 
 
 def core():
-# Create arguments for commandline tool
+    # Create arguments for commandline/gui tool
     parser = GooeyParser(description=
         """Virginia iGEM 2018's iGEM Wiki Webscraper.""",
         epilog="""
@@ -60,9 +60,8 @@ def core():
     # Create WikiScraper with loaded config file
     scraper = WikiScraper(config)
 
-
     # Open CSV file that we'll write our information to
-    outfile = csv.writer(open(config['output']['outputfile'], 'w+'), 
+    outfile = csv.writer(open(config['output']['outputfile'], 'w+', encoding='utf-8'), 
                          delimiter=config['output']['filedelimiter'],  
                          quotechar=config['output']['filequotechar'])
 
@@ -104,7 +103,8 @@ def core():
             # Flatten team data using list comprehensions
             concatenateddata = []
             for data in teamdata:
-                concatenateddata.append('\n'.join(data).replace("\n",r"\n").replace("\t",r"\t"))
+                concatenateddata.append(data)
+
 
             outfile.writerow(team + concatenateddata)
 
@@ -119,12 +119,11 @@ else:
     target = 'wikiscraper-gui'
 
 @Gooey(
-    #navigation='TABBED',
     program_name='iGEM Wikiscraper',
     advanced=True,
     tabbed_groups=True,
     image_dir=os.path.dirname(__file__),
-    #target=target
+    target=target
 )
 def gui():
     core()
