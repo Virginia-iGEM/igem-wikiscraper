@@ -4,27 +4,35 @@ import argparse
 import csv
 import json
 import string
+import os
+import platform
 
-from gooey import Gooey
+from gooey import Gooey, GooeyParser
 
 from igemwikiscraper.scraper import WikiScraper, prettify_subpages
 
 
 def core():
 # Create arguments for commandline tool
-    parser = argparse.ArgumentParser(description=
-        """Virginia iGEM 2018's iGEM Wiki Webscraper. Pulls HTML from relevant
-        iGEM pages parses through them to extract project descriptions. Used to
-        discover other teams for potential collaboration. Not all parameters can 
-        be set via flags, see config.json for further configuration options.""")
-    parser.add_argument('data', nargs='*', help='Path to .csv file containing team name information. Retrieve from https://igem.org/Team_List. Alternatively specify a single team name, which can be found on the wiki as http://<year>.igem.org/Team:<team-name>')
-    parser.add_argument('--config', '-c', help='Configuration file to use. Pass in arguments with this file.', default='config.json')
-    parser.add_argument('--subpages', '-s', nargs='*', help='Subpages. In addition to the base URL, these subpages will be scraped. Examples would be /Description or /Parts')
-    parser.add_argument('--output', '-o', help='CSV file to output data to.')
-    parser.add_argument('--verbose', '-v', action='count', help='Verbosity level. -v prints summary of each wiki scrape. -vv prints the contents of each wiki scrape. Omit to recieve only progress notifications.')
-    parser.add_argument('--start', type=int, help='First team to pull from datafile. 0-indexed.')
-    parser.add_argument('--end', type=int, help='Last team to pull from datafile.')
-    parser.add_argument('--gracetime', '-g', type=float, help='Time to wait between scrapes.')
+    parser = GooeyParser(description=
+        """Virginia iGEM 2018's iGEM Wiki Webscraper.""",
+        epilog="""
+        Pulls HTML from relevant iGEM pages parses through them to extract 
+        project descriptions. Not all parameters can be set via flags, see 
+        config.json for further configuration options.""")
+
+    main_args = parser.add_argument_group("Main", "Required to scrape data.")
+    option_args = parser.add_argument_group("Options", "Override settings in config.json. Use of config.json is reccommended over setting these.")
+
+    main_args.add_argument('data', nargs='*', help='Path to .csv file containing team name information. Retrieve from https://igem.org/Team_List. Alternatively specify a single team name, which can be found on the wiki as http://<year>.igem.org/Team:<team-name>', widget='FileChooser')
+    main_args.add_argument('--config', '-c', help='Configuration file to use. Pass in arguments with this file.', default='config.json', widget='FileChooser')
+
+    option_args.add_argument('--output', '-o', help='CSV file to output data to.', widget='FileSaver')
+    option_args.add_argument('--subpages', '-s', nargs='*', help='Subpages to scrape. Such as /Description or /Parts')
+    option_args.add_argument('--verbose', '-v', action='count', help='-v print summaries. -vv print full contents. Omit to recieve only progress notifications.')
+    option_args.add_argument('--start', type=int, help='First team to pull from datafile. 0-indexed.')
+    option_args.add_argument('--end', type=int, help='Last team to pull from datafile.')
+    option_args.add_argument('--gracetime', '-g', type=float, help='Time to wait between scrapes.')
 
     args = parser.parse_args() # Pull down cmdline arguments
 
@@ -105,7 +113,19 @@ def core():
 
             teamcount = teamcount + 1
 
-@Gooey
+if platform.system() == 'Windows':
+    target = 'wikiscraper-gui.exe'
+else:
+    target = 'wikiscraper-gui'
+
+@Gooey(
+    #navigation='TABBED',
+    program_name='iGEM Wikiscraper',
+    advanced=True,
+    tabbed_groups=True,
+    image_dir=os.path.dirname(__file__),
+    #target=target
+)
 def gui():
     core()
 

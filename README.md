@@ -6,15 +6,21 @@ A quick-and-dirty Python CLI tool for scraping iGEM wikis. Can be used to pull o
 
 This tool currently only functions with Python3. Python2 compatibility is on the backburner.
 
+### GUI
+
+We've built a user-friendly GUI for this tool if you prefer pressing buttons. It still requires configuration as detailed under [Configuration](#configuration) using a text editor such as Notepad or Vim.
+
+### Command Line
+
 1. Clone `igem-wikiscraper` somewhere out of the way, like `~/.install`.
 2. Enter repository, then install with `cd igem-wikiscraper` and `./install.sh`
   - Note for Windows users: install.sh will likely not work. Instead type either `pip install -e .` or `pip3 install -e .` depending on the name of your Python3 pip tool.
 3. Leave the repository. Create a new folder to store your input and output data.
 4. Copy `config.json` from the cloned `igem-wikiscraper/igemwikiscraper` directory into your new folder.
 5. Modify `config.json` as you see fit. Descriptions of config options are available below.
-6. Run `igemwikiscraper [teamlist.csv]` from this new folder, where `[teamlist.csv]` is the path to a .csv list of iGEM teams. These files can be found at https://igem.org/Team_List
+6. Run `wikiscraper [teamlist.csv]` from this new folder, where `[teamlist.csv]` is the path to a .csv list of iGEM teams. These files can be found at https://igem.org/Team_List
 
-### Example Command Sequence
+#### Example Command Sequence
 
 ```bash
 git clone https://github.com/Virginia-iGEM/igem-wikiscraper.git
@@ -28,7 +34,7 @@ mkdir data output
 cd data
 wget "https://igem.org/Team_List.cgi?jamboree=91&team_list_download=1"
 cd ..
-igemwikiscraper data/2018__team_list__[YOUR DATE HERE].csv
+wikiscraper data/2018__team_list__[YOUR DATE HERE].csv
 ```
 
 Output file can be found under `output/` or as configured.
@@ -45,7 +51,7 @@ This process occurs for each page specified by `subpages`, leaving us with a lis
 
 ## Configuration
 
-Note: Some of these options can be set when using the CLI. Enter `igemwikiscraper -h` for a list of options which can be set through the CLI. This is convenient for options like `-vv` which you may not want to see on every scrape attempt.
+Note: Some of these options can be set when using the CLI. Enter `wikiscraper -h` for a list of options which can be set through the CLI. This is convenient for options like `-vv` which you may not want to see on every scrape attempt.
 
 - data: Options for what kind of data we take in and look for
   - subpages: Which pages on the wiki to look at. `""` denotes the index. Note that each page is lead with a forward slash; every page must be lead with a forward slash. Examples: `/Team`, `/Safety`
@@ -71,7 +77,6 @@ Note: Some of these options can be set when using the CLI. Enter `igemwikiscrape
 
 ## Todo
 
-- When start/end are either unset or set to negative values, scrape the whole list
 - Expand collapsenewlines option to also collapse strings of newlines and tabs into just one newline
 - Make it so that options under `scraper.use` actually enable/disable the filter
 - Replace `excisescripts` and `excisestyles` flags with an HTML selector that excises arbitrary HTML elements
