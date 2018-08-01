@@ -6,13 +6,13 @@ import json
 import string
 import os
 import platform
+import sys
 
 from gooey import Gooey, GooeyParser
 
 from igemwikiscraper.scraper import WikiScraper, prettify_subpages
 
-
-def core():
+def core(gui=False):
     # Create arguments for commandline/gui tool
     parser = GooeyParser(description=
         """Virginia iGEM 2018's iGEM Wiki Webscraper.""",
@@ -58,7 +58,7 @@ def core():
                 config['scraper']['gracetime'] = arg
     
     # Create WikiScraper with loaded config file
-    scraper = WikiScraper(config)
+    scraper = WikiScraper(config, gui=gui)
 
     # Open CSV file that we'll write our information to
     outfile = csv.writer(open(config['output']['outputfile'], 'w+', encoding='utf-8'), 
@@ -91,13 +91,13 @@ def core():
             elif teamcount > config['data']['end']:
                 break
             elif teamcount == config['data']['start'] + totalteams / 4:
-                print('25% of wikis scraped')
+                print('25% of wikis scraped', flush=gui)
             elif teamcount == config['data']['start'] + totalteams / 2:
-                print('50% of wikis scraped')
+                print('50% of wikis scraped', flush=gui)
             elif teamcount == config['data']['start'] + totalteams * 3 / 4:
-                print('75% of wikis scraped')
+                print('75% of wikis scraped', flush=gui)
             elif teamcount > config['data']['start'] + totalteams:
-                print('100% of wikis scraped')
+                print('100% of wikis scraped', flush=gui)
                 
             teamdata = scraper.scrape(team)
             # Flatten team data using list comprehensions
@@ -109,7 +109,7 @@ def core():
             outfile.writerow(team + concatenateddata)
 
             if config['output']['verbose'] > 1:
-                print('======================================================================')
+                print('======================================================================', flush=gui)
 
             teamcount = teamcount + 1
 
@@ -126,10 +126,10 @@ else:
     target=target
 )
 def gui():
-    core()
+    core(gui=True)
 
 def main():
-    core()
+    core(gui=False)
 
 if __name__ == "__main__":
     main()

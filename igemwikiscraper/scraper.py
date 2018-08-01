@@ -69,8 +69,9 @@ def assemble_urls(year, name, subpages=['']):
     return urls
 
 class WikiScraper:
-    def __init__(self, config):
+    def __init__(self, config, gui=False):
         self.config = config
+        self.gui = gui
 
     def scrape(self, team):
         """
@@ -85,8 +86,8 @@ class WikiScraper:
         pretty_subpages = prettify_subpages(self.config['data']['subpages'])
 
         if self.config['output']['verbose'] > 0:
-            print('Scraping', name, year + "'s wiki")
-            print('----------------------------------------------------------------------')
+            print('Scraping', name, year + "'s wiki", flush=self.gui)
+            print('----------------------------------------------------------------------', flush=self.gui)
 
         success = False
         outputdata = []
@@ -124,8 +125,8 @@ class WikiScraper:
 
                         if self.strain(text):
                             if self.config['output']['verbose'] > 1:
-                                print(text + '\n')
-                                print('----------------------------------------------------------------------')
+                                print(text + '\n', flush=self.gui)
+                                print('----------------------------------------------------------------------', flush=self.gui)
                             output.append(text)
 
                 if len(output) == 0:
@@ -134,17 +135,17 @@ class WikiScraper:
                               'page either hasn\'t had a description added to it,'
                               + 'is a redirect to an external website (against iGEM rules),'
                               + 'or HTML has so many syntax errors that the parser cannot'
-                              + 'interpret it.')
+                              + 'interpret it.', flush=self.gui)
                 else:
                     if self.config['output']['verbose'] > 0:
-                        print(len(output), 'useful items found on', pretty_subpages[index])
+                        print(len(output), 'useful items found on', pretty_subpages[index], flush=self.gui)
                     success = True
 
 
                 outputdata.append(output)
         else:
             if self.config['output']['verbose'] > 1:
-                print('Skipping team; Deleted, Withdrawn or Pending')
+                print('Skipping team; Deleted, Withdrawn or Pending', flush=self.gui)
 
         outputdata.insert(0, [str(success)])
         return outputdata
