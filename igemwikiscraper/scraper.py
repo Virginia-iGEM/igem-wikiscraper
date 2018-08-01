@@ -82,12 +82,12 @@ class WikiScraper:
         
         year = team[8]
         name = team[1]
-        valid = team[7] == 'Accepted'
+        valid = team[7] == 'Accepted' # Only continue if team is accepted
         pretty_subpages = prettify_subpages(self.config['data']['subpages'])
 
         if self.config['output']['verbose'] > 0:
+            print('======================================================================', flush=self.gui)
             print('Scraping', name, year + "'s wiki", flush=self.gui)
-            print('----------------------------------------------------------------------', flush=self.gui)
 
         success = False
         outputdata = []
@@ -125,8 +125,8 @@ class WikiScraper:
 
                         if self.strain(text):
                             if self.config['output']['verbose'] > 1:
-                                print(text + '\n', flush=self.gui)
                                 print('----------------------------------------------------------------------', flush=self.gui)
+                                print(text + '\n', flush=self.gui)
                             output.append(text)
 
                 if len(output) == 0:
@@ -144,7 +144,7 @@ class WikiScraper:
 
                 outputdata.append(output)
         else:
-            if self.config['output']['verbose'] > 1:
+            if self.config['output']['verbose'] > 0:
                 print('Skipping team; Deleted, Withdrawn or Pending', flush=self.gui)
 
         outputdata.insert(0, [str(success)])

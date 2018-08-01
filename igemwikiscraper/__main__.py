@@ -105,11 +105,7 @@ def core(gui=False):
             for data in teamdata:
                 concatenateddata.append(data)
 
-
             outfile.writerow(team + concatenateddata)
-
-            if config['output']['verbose'] > 1:
-                print('======================================================================', flush=gui)
 
             teamcount = teamcount + 1
 
