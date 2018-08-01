@@ -5,8 +5,9 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name = 'igemwikiscraper',
-    version = '0.4.1',
+    version = '0.4.2',
     description = 'GUI+CLI+Library webscraper built specifically for iGEM team wiki pages',
+    long_description = long_description,
     url = 'https://github.com/Virginia-iGEM/igem-wikiscraper',
     author='Dylan Culfogienis',
     author_email='dtc9bb@virginia.edu',
