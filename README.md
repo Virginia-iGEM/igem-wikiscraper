@@ -19,7 +19,7 @@ General instructions are below. See [gui](#gui) for an easy-to-use graphical int
 
 ### GUI
 
-For easy installation and use, right click on the appropriate link below and download:
+For easy installation and use, right click on the appropriate link below and click `Save link as`:
 - [Windows](https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/init.bat) 
 - [Mac/UNIX](https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/init.sh)
 
