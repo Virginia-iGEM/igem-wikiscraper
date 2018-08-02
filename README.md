@@ -2,6 +2,8 @@
 
 A quick-and-dirty Python CLI tool for scraping iGEM wikis. Can be used to pull out any relevant HTML-based information. Note that this tool will not function on, for example, lab manuals involving PDFs, pages that dynamically load in content on user interaction or page scroll, or pages that redirect to other websites (not that this is allowed by iGEM).
 
+As-configured, the tool is designed to only look for paragraphs on teams' homepages or Descriptions pages that look like project descriptions (fairly long, multiple sentences, etc. etc.). This is because our team used the tool to pull all teams' descriptions from all 2018 wikis to try and find collaboration partners. If you would like to modify the functionality, this can be done through the config.json file.
+
 ## Use
 
 This tool currently only functions with Python3. Python2 compatibility is on the backburner. **Any instructions assume you have Python3 installed and on PATH. Instructions also assume `pip` refers to Python 3 pip and not Python 2 pip.**
@@ -17,25 +19,27 @@ General instructions are below. See [gui](#gui) for an easy-to-use graphical int
 
 ### GUI
 
-For easy installation and use, right click on the appropriate link below and download:
+For easy installation and use, right click on the appropriate link below and click `Save link as...`:
 - [Windows](https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/init.bat) 
 - [Mac/UNIX](https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/init.sh)
 
-Move the downloaded file (init.bat or init.sh) to the folder where you would like to store your data (such as your Documents). Double click on the file; this will install wikiscraper and create a folder named `igem-scrapes` containing 2018 iGEM data and an example filestructure and config.json file.
+Move the downloaded file (init.bat or init.sh) to the folder where you would like to store your data (such as your Documents). Double click on the file. This may bring up a prompt that the file is unsafe; if this happens, click `more info` and then `run anyways`. A cmd.exe window will then launch before closing. This will install wikiscraper and create a folder named `igem-scrapes` containing 2018 iGEM data and an example filestructure and config.json file.
 
-Enter the `igem-scrapes` folder and double click on the file named `wikiscraper-gui`. If all went well, this should launch a small window that looks like this:
+Enter the `igem-scrapes` folder and double click on the file named `wikiscraper-gui`. If all went well, this should launch a cmd.exe terminal and a small window that looks like this:
 
-![gui-1](tutorial/gui-1.png)
+![gui-1](tutorial/gui-1.PNG)
 
 Click `browse` on the `data`option and navigate to where you've initialized the `igem-scrapes` folder and find the file named `2018__team_list__2018-07-02.csv`. Select this file.
 
-![gui-2](tutorial/gui-2.png)
+![gui-2](tutorial/gui-2.PNG)
 
-Once this is done, hit the `start button, and the scrape will begin.
+Once this is done, hit the `start` button, and the scrape will begin. Data will be placed in a file named `descriptions.csv` in the data folder.
 
-The default configuration file will only scrape the first 10 teams on this list; you may have also noticed that this list is only for 2018. If you need data for a later year, or a previous year, or all years, this data can be found on the [igem website](http://igem.org/Team_List).
+The default configuration file will only scrape the first 10 teams on this list; you may have also noticed that this list is only for 2018. If you need data for a later year, or a previous year, or all years, this data can be found on the [igem website](http://igem.org/Team_List). If you need to scrape more teams, you can change these settings in `config.json`.
 
 We strongly reccommend configuring the tool by editing `config.json` instead of changing values in the options tab, as your changes to the options tab will not be saved. This can be done with Notepad on Windows or TextEdit on Mac. [Notepad++](https://notepad-plus-plus.org/) works on all OSes if you would like syntax highlighting and error validation for this file.
+
+In order to understand config.json, see the [Configuration](#configuration) section.
 
 See the [Analysis](#analysis) section for output file structure and instructions for basic analysis.
 
@@ -50,7 +54,8 @@ pip3 install igemwikiscraper
 mkdir igem-scrapes
 cd igem-scrapes
 curl https://github.com/Virginia-iGEM/igem-wikiscraper/blob/master/igemwikiscraper/config.json -o config.json
-mkdir {data,output}
+mkdir data
+mkdir output
 cd data
 wget https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/data/2018__team_list__2018-07-02.csv -o 2018__team_list__2018-07-02.csv
 cd ..
@@ -59,7 +64,7 @@ wikiscraper data/2018__team_list__2018-07-02.csv
 
 Output file can be found under `output/` or as configured.
 
-Edit `config.json` with your preferred text editor. `nano` should work fine if you're unfamiliar with a termianl text editor.
+Edit `config.json` with your preferred text editor. `nano` should work fine if you're unfamiliar with a termianl text editor. [Configuration](#configuration) elaborates on what each option changes.
 
 ## Brief Description of Tool Function
 
@@ -96,8 +101,8 @@ Note: Some of these options can be set when using the CLI. Enter `wikiscraper -h
 - data: Options for what kind of data we take in and look for
   - subpages: Which pages on the wiki to look at. `""` denotes the index. Note that each page is lead with a forward slash; every page must be lead with a forward slash. Examples: `/Team`, `/Safety`
   - filedelimiter: What kind of csv delimiter is the team name list using? The iGEM Team List page seems to generate CSV's with comma delimiters.
-  - start: Which team in the list to start with. Set to negative to remove limit.
-  - end: Which team in the list to end with. Set to negative to remove limit.
+  - start: Which team in the list to start with. Set to `-1` to remove limit.
+  - end: Which team in the list to end with. Set to `-1` to remove limit.
 - scraper: Options for how the scraper filters and interprets data
   - htmlselector: JQuery-style selector for html elements. `#content` seems to include all hand-written team info without including any extra junk. Upon inspecting many iGEM wikis, we found all content _should_ be wrapped in `#mw-content-text`, but because there are _so many_ (about 10% of) iGEM wikis with broken HTML, mostly in the form of unpaired HTML tags, we have to be a bit generous with our selectors.
   - gracetime: Number of seconds to wait between HTML GET requests. Strongly reccommend this to be kept at 1 or above; any lower is considered impolite by web scraping standards, may break the iGEM Wiki, and may be considered a crime (a Denial of Service Attack, albeit a poor one).
