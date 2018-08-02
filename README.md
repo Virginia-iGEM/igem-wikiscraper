@@ -25,11 +25,11 @@ Move the downloaded file (init.bat or init.sh) to the folder where you would lik
 
 Enter the `igem-scrapes` folder and double click on the file named `wikiscraper-gui`. If all went well, this should launch a small window that looks like this:
 
-![gui-1](tutorial/gui-1.png)
+![gui-1](tutorial/gui-1.PNG)
 
 Click `browse` on the `data`option and navigate to where you've initialized the `igem-scrapes` folder and find the file named `2018__team_list__2018-07-02.csv`. Select this file.
 
-![gui-2](tutorial/gui-2.png)
+![gui-2](tutorial/gui-2.PNG)
 
 Once this is done, hit the `start button, and the scrape will begin.
 
