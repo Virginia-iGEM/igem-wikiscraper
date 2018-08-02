@@ -19,13 +19,13 @@ General instructions are below. See [gui](#gui) for an easy-to-use graphical int
 
 ### GUI
 
-For easy installation and use, right click on the appropriate link below and click `Save link as`:
+For easy installation and use, right click on the appropriate link below and click `Save link as...`:
 - [Windows](https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/init.bat) 
 - [Mac/UNIX](https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/init.sh)
 
-Move the downloaded file (init.bat or init.sh) to the folder where you would like to store your data (such as your Documents). Double click on the file; this will install wikiscraper and create a folder named `igem-scrapes` containing 2018 iGEM data and an example filestructure and config.json file.
+Move the downloaded file (init.bat or init.sh) to the folder where you would like to store your data (such as your Documents). Double click on the file. This may bring up a prompt that the file is unsafe; if this happens, click `more info` and then `run anyways`. A cmd.exe window will then launch before closing. This will install wikiscraper and create a folder named `igem-scrapes` containing 2018 iGEM data and an example filestructure and config.json file.
 
-Enter the `igem-scrapes` folder and double click on the file named `wikiscraper-gui`. If all went well, this should launch a small window that looks like this:
+Enter the `igem-scrapes` folder and double click on the file named `wikiscraper-gui`. If all went well, this should launch a cmd.exe terminal and a small window that looks like this:
 
 ![gui-1](tutorial/gui-1.PNG)
 
@@ -33,7 +33,7 @@ Click `browse` on the `data`option and navigate to where you've initialized the 
 
 ![gui-2](tutorial/gui-2.PNG)
 
-Once this is done, hit the `start button, and the scrape will begin. Data will be placed in a file named `descriptions.csv` in the data folder.
+Once this is done, hit the `start` button, and the scrape will begin. Data will be placed in a file named `descriptions.csv` in the data folder.
 
 The default configuration file will only scrape the first 10 teams on this list; you may have also noticed that this list is only for 2018. If you need data for a later year, or a previous year, or all years, this data can be found on the [igem website](http://igem.org/Team_List).
 
