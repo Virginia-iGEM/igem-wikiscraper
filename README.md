@@ -4,9 +4,11 @@ A quick-and-dirty Python CLI tool for scraping iGEM wikis. Can be used to pull o
 
 ## Use
 
-This tool currently only functions with Python3. Python2 compatibility is on the backburner. Any instructions assume you have Python3 installed and on PATH.
+This tool currently only functions with Python3. Python2 compatibility is on the backburner. **Any instructions assume you have Python3 installed and on PATH. Instructions also assume `pip` refers to Python 3 pip and not Python 2 pip.**
 
-1. Install via `pip` or download from [releases](https://github.com/Virginia-iGEM/igem-wikiscraper/releases)
+General instructions are below. See [gui](#gui) for an easy-to-use graphical interface and [terminal](#terminal) if you need more flexibility and aren't afraid of a console.
+
+1. Install via `pip`
 2. Create a new folder to hold all your information and scrapes. Add `data` and `output` subdirectories
 3. Copy `config.json` from [here](https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/igemwikiscraper/config.json) into this new folder
 4. Retrieve data from http://igem.org/Team_List.
@@ -15,27 +17,47 @@ This tool currently only functions with Python3. Python2 compatibility is on the
 
 ### GUI
 
-A GUI tool is available. This tool can be accessed via `wikiscraper-gui` once installed with `pip install igemwikiscraper`. Steps 1-5 above should be followed before using this GUI.
+For easy installation and use, right click on the appropriate link below and download:
+- [Windows](https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/init.bat) 
+- [Mac/UNIX](https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/init.sh)
+
+Move the downloaded file (init.bat or init.sh) to the folder where you would like to store your data (such as your Documents). Double click on the file; this will install wikiscraper and create a folder named `igem-scrapes` containing 2018 iGEM data and an example filestructure and config.json file.
+
+Enter the `igem-scrapes` folder and double click on the file named `wikiscraper-gui`. If all went well, this should launch a small window that looks like this:
+
+![gui-1](tutorial/gui-1.png)
+
+Click `browse` on the `data`option and navigate to where you've initialized the `igem-scrapes` folder and find the file named `2018__team_list__2018-07-02.csv`. Select this file.
+
+![gui-2](tutorial/gui-2.png)
+
+Once this is done, hit the `start button, and the scrape will begin.
+
+The default configuration file will only scrape the first 10 teams on this list; you may have also noticed that this list is only for 2018. If you need data for a later year, or a previous year, or all years, this data can be found on the [igem website](http://igem.org/Team_List).
+
+We strongly reccommend configuring the tool by editing `config.json` instead of changing values in the options tab, as your changes to the options tab will not be saved. This can be done with Notepad on Windows or TextEdit on Mac. [Notepad++](https://notepad-plus-plus.org/) works on all OSes if you would like syntax highlighting and error validation for this file.
 
 ### Terminal
 
-These commands should work for Ubuntu. For Windows, substitute `pip` for `pip3`. For Mac or other UNIXes, you're on your own.
+These commands should work for Ubuntu. For Windows, substitute `pip` for `pip3`. For Mac or other UNIXes, you're on your own. Install scripts are also available:
+- [Windows](https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/init.bat) 
+- [Mac/UNIX](https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/init.sh)
 
 ```bash
 pip3 install igemwikiscraper
 mkdir igem-scrapes
 cd igem-scrapes
-wget https://github.com/Virginia-iGEM/igem-wikiscraper/blob/master/igemwikiscraper/config.json
-nano config.json    # modify as needed
+curl https://github.com/Virginia-iGEM/igem-wikiscraper/blob/master/igemwikiscraper/config.json -o config.json
 mkdir {data,output}
 cd data
-wget https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/data/2018__team_list__2018-07-02.csv
+wget https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/data/2018__team_list__2018-07-02.csv -o 2018__team_list__2018-07-02.csv
 cd ..
 wikiscraper data/2018__team_list__2018-07-02.csv
 ```
 
 Output file can be found under `output/` or as configured.
 
+Edit `config.json` with your preferred text editor. `nano` should work fine if you're unfamiliar with a termianl text editor.
 
 ## Brief Description of Tool Function
 
