@@ -37,6 +37,8 @@ The default configuration file will only scrape the first 10 teams on this list;
 
 We strongly reccommend configuring the tool by editing `config.json` instead of changing values in the options tab, as your changes to the options tab will not be saved. This can be done with Notepad on Windows or TextEdit on Mac. [Notepad++](https://notepad-plus-plus.org/) works on all OSes if you would like syntax highlighting and error validation for this file.
 
+See the [Analysis](#analysis) section for output file structure and instructions for basic analysis.
+
 ### Terminal
 
 These commands should work for Ubuntu. For Windows, substitute `pip` for `pip3`. For Mac or other UNIXes, you're on your own. Install scripts are also available:
@@ -68,6 +70,24 @@ Specific HTML tags are removed in preprocessing (such as script and style tags, 
 All of the children of selected tags are then unwrapped, discarding their attributes and keeping only their content in (what I believe is) a pre-ordered tree traversal. 
 
 This process occurs for each page specified by `subpages`, leaving us with a list of lists of strings for each team. This 2d list is flattened to 1d by joining the sublists with newlines, before being appended to team information and written out as one row in a .csv file specified by `outputfile`. This is repeated for each team in the teamlist, building up a list of team information paired with useful scraped data.
+
+## Analysis
+
+The output file, by default, is a CSV delimited by vertical pipes (the `|` character, typed by entering Shift-Backslash). This is done because when scraping data from the web, many project descriptions will contain commas; most data analysis software like Matlab, Excel and Python will not, by default, recognize this as a delimiter, and so you must explicitly set it in your software package when importing the data.
+
+The data is added on to the team list that is downloaded from the iGEM website; in addition to columns A-I that come with this file, 3 (by default) new columns can be found: J, `Scrape Successful?`, K, `Homepage` and L, `/Description`. Column J will be TRUE if and only if some data was scraped. Note that it is most commonly FALSE because a team either withdrew, was deleted or has the Pending status. Any columns after this will contain the data for each page that was scraped; Homepage and /Description are the only pages that are scraped by default.
+
+![data](tutorial/data.PNG)
+
+Data can be analyzed in Excel via the Data Tab > Get External Data > From Text wizard. A custom delimiter can be explicitly set.
+
+We also provide a Jupyter notebook that can be found [here](https://github.com/Virginia-iGEM/igem-wikiscraper/blob/master/analysis/Scrape_Analyzer.ipynb).
+
+Dependencies for this notebook can be installed with
+
+`pip install pandas qgrid numpy`
+
+We used this notebook to perform a keyword frequency analysis in an attempt to find other teams who are doing work related to our own project.
 
 ## Configuration
 
