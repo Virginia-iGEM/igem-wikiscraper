@@ -35,7 +35,7 @@ Click `browse` on the `data`option and navigate to where you've initialized the 
 
 Once this is done, hit the `start` button, and the scrape will begin. Data will be placed in a file named `descriptions.csv` in the data folder.
 
-The default configuration file will only scrape the first 10 teams on this list; you may have also noticed that this list is only for 2018. If you need data for a later year, or a previous year, or all years, this data can be found on the [igem website](http://igem.org/Team_List).
+The default configuration file will only scrape the first 10 teams on this list; you may have also noticed that this list is only for 2018. If you need data for a later year, or a previous year, or all years, this data can be found on the [igem website](http://igem.org/Team_List). If you need to scrape more teams, you can change these settings in `config.json`.
 
 We strongly reccommend configuring the tool by editing `config.json` instead of changing values in the options tab, as your changes to the options tab will not be saved. This can be done with Notepad on Windows or TextEdit on Mac. [Notepad++](https://notepad-plus-plus.org/) works on all OSes if you would like syntax highlighting and error validation for this file.
 
