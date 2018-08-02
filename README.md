@@ -81,8 +81,8 @@ Note: Some of these options can be set when using the CLI. Enter `wikiscraper -h
 - data: Options for what kind of data we take in and look for
   - subpages: Which pages on the wiki to look at. `""` denotes the index. Note that each page is lead with a forward slash; every page must be lead with a forward slash. Examples: `/Team`, `/Safety`
   - filedelimiter: What kind of csv delimiter is the team name list using? The iGEM Team List page seems to generate CSV's with comma delimiters.
-  - start: Which team in the list to start with. Set to negative to remove limit.
-  - end: Which team in the list to end with. Set to negative to remove limit.
+  - start: Which team in the list to start with. Set to `-1` to remove limit.
+  - end: Which team in the list to end with. Set to `-1` to remove limit.
 - scraper: Options for how the scraper filters and interprets data
   - htmlselector: JQuery-style selector for html elements. `#content` seems to include all hand-written team info without including any extra junk. Upon inspecting many iGEM wikis, we found all content _should_ be wrapped in `#mw-content-text`, but because there are _so many_ (about 10% of) iGEM wikis with broken HTML, mostly in the form of unpaired HTML tags, we have to be a bit generous with our selectors.
   - gracetime: Number of seconds to wait between HTML GET requests. Strongly reccommend this to be kept at 1 or above; any lower is considered impolite by web scraping standards, may break the iGEM Wiki, and may be considered a crime (a Denial of Service Attack, albeit a poor one).
