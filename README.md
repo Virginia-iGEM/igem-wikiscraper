@@ -52,7 +52,8 @@ pip3 install igemwikiscraper
 mkdir igem-scrapes
 cd igem-scrapes
 curl https://github.com/Virginia-iGEM/igem-wikiscraper/blob/master/igemwikiscraper/config.json -o config.json
-mkdir {data,output}
+mkdir data
+mkdir output
 cd data
 wget https://raw.githubusercontent.com/Virginia-iGEM/igem-wikiscraper/master/data/2018__team_list__2018-07-02.csv -o 2018__team_list__2018-07-02.csv
 cd ..
